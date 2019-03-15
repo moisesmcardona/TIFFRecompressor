@@ -43,18 +43,6 @@ namespace TIFFRecompressor
             }
         }
 
-        private void recompress(string input, string output, ImageCodecInfo codecInfo, EncoderValue compressionMethod)
-        {
-            FileStream filestream = new FileStream(input, FileMode.Open, FileAccess.Read);
-            Bitmap bitmap = new Bitmap(filestream);
-            FileStream filestream2 = new FileStream(output, FileMode.Create, FileAccess.Write);
-            EncoderParameter encoderParameter = new EncoderParameter(System.Drawing.Imaging.Encoder.Compression, (long)compressionMethod);
-            EncoderParameters encoderParameters = new EncoderParameters(1);
-            encoderParameters.Param[0] = encoderParameter;
-            bitmap.Save(filestream2, codecInfo, encoderParameters);
-            filestream2.Close();
-            progressBar1.BeginInvoke(new MethodInvoker(() => progressBar1.PerformStep()));
-        }
         private static ImageCodecInfo GetEncoderInfo(String mimeType)
         {
             int j;
@@ -66,6 +54,18 @@ namespace TIFFRecompressor
                     return encoders[j];
             }
             return null;
+        }
+        private void recompress(string input, string output, ImageCodecInfo codecInfo, EncoderValue compressionMethod)
+        {
+            FileStream filestream = new FileStream(input, FileMode.Open, FileAccess.Read);
+            Bitmap bitmap = new Bitmap(filestream);
+            FileStream filestream2 = new FileStream(output, FileMode.Create, FileAccess.Write);
+            EncoderParameter encoderParameter = new EncoderParameter(System.Drawing.Imaging.Encoder.Compression, (long)compressionMethod);
+            EncoderParameters encoderParameters = new EncoderParameters(1);
+            encoderParameters.Param[0] = encoderParameter;
+            bitmap.Save(filestream2, codecInfo, encoderParameters);
+            filestream2.Close();
+            progressBar1.BeginInvoke(new MethodInvoker(() => progressBar1.PerformStep()));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -144,6 +144,18 @@ namespace TIFFRecompressor
         {
             Properties.Settings.Default.CompressionMethod = compressionMethodComboBox.SelectedItem.ToString();
             Properties.Settings.Default.Save();
+        }
+
+        private void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            if (RecompressButton.Enabled)
+                inputTextbox.Text = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
         }
     }
 }
