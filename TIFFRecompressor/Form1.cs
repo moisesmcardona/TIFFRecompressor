@@ -26,6 +26,7 @@ namespace TIFFRecompressor
                 CPUThreads.Value = Environment.ProcessorCount;
             else
                 CPUThreads.Value = Properties.Settings.Default.CPUThreads;
+            CPUThreads.Maximum = Environment.ProcessorCount;
         }
 
         private EncoderValue getCompressionMethod(string method)
