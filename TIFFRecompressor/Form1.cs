@@ -22,6 +22,10 @@ namespace TIFFRecompressor
         private void Form1_Load(object sender, EventArgs e)
         {
             compressionMethodComboBox.SelectedItem = Properties.Settings.Default.CompressionMethod;
+            if (Properties.Settings.Default.CPUThreads == 0)
+                CPUThreads.Value = Environment.ProcessorCount;
+            else
+                CPUThreads.Value = Properties.Settings.Default.CPUThreads;
         }
 
         private EncoderValue getCompressionMethod(string method)
@@ -92,7 +96,8 @@ namespace TIFFRecompressor
             browseOutput.Enabled = false;
             compressionMethodComboBox.Enabled = false;
             RecompressButton.Enabled = false;
-            Directory.CreateDirectory(outputTextBox.Text);
+            CPUThreads.Enabled = false;
+            If (!Directory.Exists(outputTextBox.Text) Directory.CreateDirectory(outputTextBox.Text);
             EncoderValue compressionMethod = getCompressionMethod(compressionMethodComboBox.SelectedItem.ToString());
             System.Threading.Thread thread = new System.Threading.Thread(() => threadCode(compressionMethod));
             thread.Start();
@@ -126,7 +131,7 @@ namespace TIFFRecompressor
                         tasks.Add(() => recompress(inputPath, OutputPath, codecInfo, compressionMethod));
                     }
                 }
-                Parallel.Invoke(new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, tasks.ToArray());
+                Parallel.Invoke(new ParallelOptions() { MaxDegreeOfParallelism = Properties.Settings.Default.CPUThreads }, tasks.ToArray());
                 RecompressButton.BeginInvoke(new MethodInvoker(() =>
                 {
                     RecompressButton.Enabled = true;
@@ -135,6 +140,7 @@ namespace TIFFRecompressor
                     browseInput.Enabled = true;
                     browseOutput.Enabled = true;
                     compressionMethodComboBox.Enabled = true;
+                    CPUThreads.Enabled = true;
                 }));
                 MessageBox.Show("Recompression finished!");
             }
@@ -156,6 +162,12 @@ namespace TIFFRecompressor
         {
             if (RecompressButton.Enabled)
                 inputTextbox.Text = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+        }
+
+        private void CPUThreads_ValueChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.CPUThreads = (int)CPUThreads.Value;
+            Properties.Settings.Default.Save();
         }
     }
 }

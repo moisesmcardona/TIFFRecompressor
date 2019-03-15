@@ -40,6 +40,9 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.CPUThreads = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.CPUThreads)).BeginInit();
             this.SuspendLayout();
             // 
             // browseInput
@@ -162,12 +165,36 @@
             this.label2.TabIndex = 11;
             this.label2.Text = "v0.1";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(194, 108);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(81, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Threads to use:";
+            // 
+            // CPUThreads
+            // 
+            this.CPUThreads.Location = new System.Drawing.Point(197, 124);
+            this.CPUThreads.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.CPUThreads.Name = "CPUThreads";
+            this.CPUThreads.Size = new System.Drawing.Size(78, 20);
+            this.CPUThreads.TabIndex = 13;
+            this.CPUThreads.ValueChanged += new System.EventHandler(this.CPUThreads_ValueChanged);
+            // 
             // Form1
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(416, 238);
+            this.Controls.Add(this.CPUThreads);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.progressBar1);
@@ -186,6 +213,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
+            ((System.ComponentModel.ISupportInitialize)(this.CPUThreads)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -205,5 +233,7 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown CPUThreads;
     }
 }
