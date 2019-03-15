@@ -97,7 +97,7 @@ namespace TIFFRecompressor
             compressionMethodComboBox.Enabled = false;
             RecompressButton.Enabled = false;
             CPUThreads.Enabled = false;
-            If (!Directory.Exists(outputTextBox.Text) Directory.CreateDirectory(outputTextBox.Text);
+            if (!Directory.Exists(outputTextBox.Text)) Directory.CreateDirectory(outputTextBox.Text);
             EncoderValue compressionMethod = getCompressionMethod(compressionMethodComboBox.SelectedItem.ToString());
             System.Threading.Thread thread = new System.Threading.Thread(() => threadCode(compressionMethod));
             thread.Start();
